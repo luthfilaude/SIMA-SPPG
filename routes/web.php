@@ -8,9 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', function(){
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'loginPage'])
+    ->middleware('redirectIfLoggedIn')
+    ->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout.post');
 
@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth', 'check_role:Admin')->group(function () {
     Route::view('/stock-items', 'admin.storage.index')->name('storage.index');
     Route::view('/category', 'admin.storage.category.index')->name('category.index');
+    Route::view('/supplier', 'admin.storage.supplier.index')->name('supplier.index');
     Route::view('/user', 'admin.user.index')->name('admin.user.index');
 });
 

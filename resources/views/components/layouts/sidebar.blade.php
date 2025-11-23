@@ -45,7 +45,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../index3.html" class="nav-link">
+                                <a wire:navigate href="{{ route('supplier.index') }}"
+                                    class="nav-link @yield('menuStorageSupplier')">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Supplier</p>
                                 </a>
