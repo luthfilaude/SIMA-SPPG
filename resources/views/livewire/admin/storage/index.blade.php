@@ -1,0 +1,137 @@
+<div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1><i class="fas fa-box mr-2"></i>{{ $title }}</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home mr-2"></i> Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item active"><i class="fas fa-box mr-1"></i> {{ $title }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button wire:click="create" class="btn btn-primary" data-toggle="modal"
+                                data-target="#createStorageModal"><i class="fas fa-plus mr-2"></i>Tambah Data</button>
+                        </div>
+                        <div>
+                            <button wire:click="createStockIn" class="btn btn-success" data-toggle="modal"
+                                data-target="#stockInStorageModal"><i class="fas fa-plus mr-2"></i>Barang Masuk</button>
+                        </div>
+                        <div>
+                            <button wire:click="createStockOut" class="btn btn-danger" data-toggle="modal"
+                                data-target="#stockOutStorageModal"><i class="fas fa-minus mr-2"></i>Barang
+                                Keluar</button>
+                        </div>
+                        <div class="btn-group dropleft">
+                            <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fas fa-print mr-1"></i> Cetak
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item text-danger" href="#"><i class="fas fa-file-pdf mr-2"></i>
+                                    PDF</a>
+                                <a class="dropdown-item text-success" href="#"><i
+                                        class="fas fa-file-excel mr-2"></i> Excel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class='mb-3 d-flex justify-content-between'>
+                        <div class="form-group d-inline-block mr-2">
+                            <select class="form-control form-control-sm" wire:model.live="perPage">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Cari..."
+                                wire:model.live="search">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Nama Bahan Baku</th>
+                                    <th>SKU</th>
+                                    <th>Kategori</th>
+                                    <th>Stok</th>
+                                    <th>Harga Beli</th>
+                                    <th style="width: 150px"><i class="fas fa-cog"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($stockItem as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->sku }}</td>
+                                        <td>{{ $item->category->name }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->stock }}</td>
+                                        <td>{{ $item->stock_purchase }}</td>
+                                        <td>
+                                            <button wire:click='show({{ $item->id }})' data-toggle="modal"
+                                                data-target="#showStorageModal" class="btn btn-sm btn-primary"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button wire:click='edit({{ $item->id }})' data-toggle="modal"
+                                                data-target="#updateStorageModal" class="btn btn-sm btn-warning"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button wire:click='storageConfirm({{ $item->id }})'
+                                                data-toggle="modal" data-target="#deleteStorageModal"
+                                                class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{ $stockItem->links() }}
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+        </section>
+        <!-- /.content -->
+    </div>
+    @include('livewire.admin.storage.create')
+    @script
+        <script>
+            $wire.on('closeCreateModal', () => {
+                $('#createStorageModal').modal('hide');
+                swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data stok gudang berhasil ditambahkan',
+                    timer: 2000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    @endscript
+    @include('livewire.admin.storage.edit')
+    @include('livewire.admin.storage.delete')
+    @include('livewire.admin.storage.show')
+    @include('livewire.admin.storage.stockIn')
+    @include('livewire.admin.storage.stockOut')
+</div>
