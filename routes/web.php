@@ -22,7 +22,8 @@ Route::middleware('auth')->group(function () {
 
 // Admin Routes
 Route::middleware('auth', 'check_role:Admin')->group(function () {
-    Route::view('/stock-items', 'admin.storage.index')->name('admin.storage.index');
+    Route::view('/stock-items', 'admin.storage.index')->name('storage.index');
+    Route::view('/category', 'admin.storage.category')->name('category.index');
     Route::view('/user', 'admin.user.index')->name('admin.user.index');
 });
 

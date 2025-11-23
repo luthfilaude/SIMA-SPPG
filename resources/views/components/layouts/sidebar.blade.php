@@ -32,14 +32,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a wire:navigate href="{{ route('admin.storage.index') }}"
-                                    class="nav-link @yield('menuStorageItem')">
+                                <a wire:navigate href="{{ route('storage.index') }}" class="nav-link @yield('menuStorageItem')">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Data Bahan Baku</p>
+                                    <p>Data Barang</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../index2.html" class="nav-link">
+                                <a wire:navigate href="{{ route('category.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Kategori</p>
                                 </a>
@@ -51,14 +50,6 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a wire:navigate href="{{ route('admin.storage.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-box"></i>
-                            <p>
-                                Storage
-                            </p>
-                        </a>
                     </li>
                     <li class="nav-item">
                         <a wire:navigate href="{{ route('admin.user.index') }}" class="nav-link @yield('menuAdminUser')">
