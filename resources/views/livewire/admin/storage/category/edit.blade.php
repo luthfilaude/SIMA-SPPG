@@ -1,11 +1,11 @@
 <div>
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+    <div wire:ignore.self class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel"><i class="fas fa-plus mr-1"></i>Edit
+                    <h5 class="modal-title" id="editCategoryModalLabel"><i class="fas fa-plus mr-1"></i>Edit
                         {{ $title }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -19,7 +19,7 @@
                             class="form-control @error('name')
                                     is-invalid
                                 @enderror"
-                            id="name" value="{{ $categories->id->name }}">
+                            id="name">
                         @error('name')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -30,15 +30,15 @@
                             class="form-control @error('slug')
                                     is-invalid
                                 @enderror"
-                            id="sku" value="{{ $categories->id->slug }}">
+                            id="sku">
                         @error('slug')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div wire:ignore>
+                    <div class="row mt-2">
                         <label for="description">Deskripsi</label>
-                        <textarea id="summernote" class="form-control @error('description') is-invalid @enderror"
-                            placeholder="Masukkan deskripsi produk">{{ $categories->id->description }}</textarea>
+                        <textarea wire:model='description' class="form-control @error('description') is-invalid @enderror"
+                            placeholder="Masukkan deskripsi produk"></textarea>
 
                         @error('description')
                             <small class="text-danger">{{ $message }}</small>
@@ -48,7 +48,7 @@
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
                             <i class="fas fa-times mr-1"></i>
                             Tutup</button>
-                        <button wire:click="update{{ $category_id }}" type="button" class="btn btn-primary btn-sm">
+                        <button wire:click="update({{ $category_id }})" type="button" class="btn btn-primary btn-sm">
                             <i class="fas fa-save mr-1"></i>
                             Simpan
                         </button>

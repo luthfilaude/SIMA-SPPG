@@ -1,11 +1,11 @@
 <div>
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel"
-        aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="createCategoryModal" tabindex="-1"
+        aria-labelledby="createCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel"><i class="fas fa-plus mr-1"></i>Tambah
+                    <h5 class="modal-title" id="createCategoryModalLabel"><i class="fas fa-plus mr-1"></i>Tambah
                         {{ $title }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -35,9 +35,9 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div wire:ignore>
+                    <div class="row mt-2">
                         <label for="description">Deskripsi</label>
-                        <textarea id="summernote" class="form-control @error('description') is-invalid @enderror"
+                        <textarea wire:model='description' class="form-control @error('description') is-invalid @enderror"
                             placeholder="Masukkan deskripsi produk"></textarea>
 
                         @error('description')

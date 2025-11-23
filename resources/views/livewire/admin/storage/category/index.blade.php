@@ -80,10 +80,10 @@
                                         <td>{{ $item->description }}</td>
                                         <td class="text-center">
                                             <button wire:click='edit({{ $item->id }})' data-toggle="modal"
-                                                data-target="#updateCategoryModal" class="btn btn-sm btn-warning"><i
+                                                data-target="#editCategoryModal" class="btn btn-sm btn-warning"><i
                                                     class="fas fa-edit"></i></button>
                                             <button wire:click='categoryConfirm({{ $item->id }})'
-                                                data-toggle="modal" data-target="#deleteStorageCategoryModal"
+                                                data-toggle="modal" data-target="#deleteCategoryModal"
                                                 class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -101,23 +101,8 @@
     @include('livewire.admin.storage.category.create')
     @script
         <script>
-            $wire.on('loadSummernote', () => {
-                $('#summernote').summernote({
-                    placeholder: 'Deskripsi Kategori',
-                    tabsize: 2,
-                    focus: true,
-                });
-
-                $('#summernote').on('summernote.change', function(we, contents) {
-                    $wire.set('description', contents); // Sync ke Livewire
-                });
-            });
-        </script>
-    @endscript
-    @script
-        <script>
-            $wire.on('closeCreateModal', () => {
-                $('#createModal').modal('hide');
+            $wire.on('closeCreateCategoryModal', () => {
+                $('#createCategoryModal').modal('hide');
                 swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -129,4 +114,33 @@
         </script>
     @endscript
     @include('livewire.admin.storage.category.edit')
+    @script
+        <script>
+            $wire.on('closeEditCategoryModal', () => {
+                $('#editCategoryModal').modal('hide');
+                swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data kategori berhasil diupdate',
+                    timer: 2000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    @endscript
+    @include('livewire.admin.storage.category.delete')
+    @script
+        <script>
+            $wire.on('closeDeleteCategoryModal', () => {
+                $('#deleteCategoryModal').modal('hide');
+                swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data kategori berhasil dihapus',
+                    timer: 2000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    @endscript
 </div>

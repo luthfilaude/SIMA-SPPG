@@ -5,6 +5,8 @@ namespace App\Livewire\Admin\Storage\Category;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
+
 
 class index extends Component
 {
@@ -17,10 +19,16 @@ class index extends Component
 
     public function render()
     {
+        $cacheKey = $cacheKey = 'categories_' . $this->search . '_per_' . $this->perPage;
+        $cacheCategory = Cache::remember($cacheKey, 3600, function () {
+        return Category::latest()
+            ->where('name', 'like', '%' . $this->search . '%')
+            ->paginate($this->perPage);
+        });
+
         $data = array(
             'title' => 'Management Category',
-            'categories' => Category::latest()->where('name','like','%'.$this->search.'%')
-            ->orderBy('created_at','asc')->paginate($this->perPage),
+            'categories' => $cacheCategory
         );
         return view('livewire.admin.storage.category.index', $data);
     }
@@ -28,7 +36,6 @@ class index extends Component
     public function create(){
         $this->resetValidation();
         $this->reset();
-        $this->dispatch('loadSummernote');
     }
     // Store to database
     public function store(){
@@ -49,7 +56,8 @@ class index extends Component
         $categories->description = $this->description;
 
         $categories->save();
-        $this->dispatch('closeCreateModal');
+        Cache::flush();
+        $this->dispatch('closeCreateCategoryModal');
     }
     public function edit($id){
         $this->resetValidation();
@@ -79,8 +87,8 @@ class index extends Component
         $categories->slug = $this->slug;
         $categories->description = $this->description;
         $categories->save();
-
-        $this->dispatch('closeEditModal');
+        Cache::flush();
+        $this->dispatch('closeEditCategoryModal');
     }
     public function categoryConfirm($id){
         $categories = Category::findOrFail($id);
@@ -94,7 +102,7 @@ class index extends Component
         if($categories){
             $categories->delete();
         }
-
-        $this->dispatch('closeDeleteModal');
+        Cache::flush();
+        $this->dispatch('closeDeleteCategoryModal');
     }
 }
