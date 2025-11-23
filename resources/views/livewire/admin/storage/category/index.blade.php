@@ -27,8 +27,8 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <button wire:click="create" class="btn btn-primary" data-toggle="modal"
-                                data-target="#createStorageCategoryModal"><i class="fas fa-plus mr-2"></i>Tambah
-                                Data</button>
+                                data-target="#createCategoryModal"><i class="fas fa-plus mr-2"></i>Tambah
+                                Kategori</button>
                         </div>
                         <div class="btn-group dropleft">
                             <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown"
@@ -62,7 +62,7 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
-                            <thead>
+                            <thead class="text-center">
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th>Nama Kategori</th>
@@ -78,15 +78,12 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->slug }}</td>
                                         <td>{{ $item->description }}</td>
-                                        <td>
-                                            <button wire:click='show({{ $item->id }})' data-toggle="modal"
-                                                data-target="#showStorageCategoryModal"
-                                                class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                        <td class="text-center">
                                             <button wire:click='edit({{ $item->id }})' data-toggle="modal"
-                                                data-target="#updateStorageCategoryModal"
-                                                class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                                            <button wire:click='storageConfirm({{ $item->id }})' data-toggle="modal"
-                                                data-target="#deleteStorageCategoryModal"
+                                                data-target="#updateCategoryModal" class="btn btn-sm btn-warning"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button wire:click='categoryConfirm({{ $item->id }})'
+                                                data-toggle="modal" data-target="#deleteStorageCategoryModal"
                                                 class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -104,8 +101,23 @@
     @include('livewire.admin.storage.category.create')
     @script
         <script>
-            $wire.on('closeCreateCategoryModal', () => {
-                $('#createCategoryModal').modal('hide');
+            $wire.on('loadSummernote', () => {
+                $('#summernote').summernote({
+                    placeholder: 'Deskripsi Kategori',
+                    tabsize: 2,
+                    focus: true,
+                });
+
+                $('#summernote').on('summernote.change', function(we, contents) {
+                    $wire.set('description', contents); // Sync ke Livewire
+                });
+            });
+        </script>
+    @endscript
+    @script
+        <script>
+            $wire.on('closeCreateModal', () => {
+                $('#createModal').modal('hide');
                 swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -116,4 +128,5 @@
             });
         </script>
     @endscript
+    @include('livewire.admin.storage.category.edit')
 </div>

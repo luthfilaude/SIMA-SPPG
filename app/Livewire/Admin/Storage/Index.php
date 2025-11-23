@@ -39,7 +39,7 @@ class Index extends Component
     public function create(){
         $this->resetValidation();
         $this->reset();
-        // $this->dispatch('loadSummernote');
+        $this->dispatch('loadSummernote');
     }
     // Store Create Data
     public function store(){

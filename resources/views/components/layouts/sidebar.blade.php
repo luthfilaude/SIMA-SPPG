@@ -38,7 +38,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a wire:navigate href="{{ route('category.index') }}" class="nav-link">
+                                <a wire:navigate href="{{ route('category.index') }}"
+                                    class="nav-link @yield('menuStorageCategory')">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Kategori</p>
                                 </a>
