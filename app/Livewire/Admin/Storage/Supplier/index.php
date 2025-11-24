@@ -6,7 +6,7 @@ use App\Models\Supplier;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Cache;
-
+use Livewire\Attributes\Validate;
 
 class index extends Component
 {
@@ -15,7 +15,7 @@ class index extends Component
     public $perPage = 10;
     public $search = '';
 
-    public $name,$contact_person,$email,$phone,$address;
+    public $name,$contact_person,$email,$phone,$address,$supplier_id;
 
     public function render()
     {
@@ -23,7 +23,6 @@ class index extends Component
         $cacheSupplier = Cache::remember($cacheKey, 3600, function () {
         return Supplier::latest()
             ->where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('phone', 'like','%' .$this->search . '%')
             ->paginate($this->perPage);
         });
 
@@ -39,7 +38,8 @@ class index extends Component
         $this->reset();
     }
     // Store to database
-    public function store(){
+    public function store()
+    {
         $this->validate(
         [
             'name' => 'required|string',
@@ -66,20 +66,71 @@ class index extends Component
         $suppliers->save();
         Cache::flush();
         $this->dispatch('closeCreateSupplierModal');
+        $this->resetValidation();
     }
+
+
     public function edit($id){
+
+        // Jika id berbeda dengan id sebelumnya
+        if ($this->supplier_id !== $id) {
         $this->resetValidation();
         $this->reset();
+        };
+
+        $suppliers = Supplier::findOrFail($id);
+        $this->supplier_id = $suppliers->id;
+        $this->name = $suppliers->name;
+        $this->contact_person = $suppliers->contact_person;
+        $this->phone = $suppliers->phone;
+        $this->email = $suppliers->email;
+        $this->address = $suppliers->address;
     }
     public function update($id){
+        $suppliers = Supplier::findOrFail($id);
+        $this->validate(
+        [
+            'name' => 'required|string',
+            'contact_person' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'required|string',
+        ],
+        [
+            'name.required' => 'Nama supplier wajib diisi.',
+            'contact_person.required' => 'Narahubung wajib diisi.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'address.required' => 'Alamat wajib diisi.',
+        ]);
+        $suppliers->name = $this->name;
+        $suppliers->contact_person = $this->contact_person;
+        $suppliers->phone = $this->phone;
+        $suppliers->email = $this->email;
+        $suppliers->address = $this->address;
+        $suppliers->save();
 
         Cache::flush();
         $this->dispatch('closeEditSupplierModal');
-    }
-    public function categoryConfirm($id){
+        $this->resetValidation();
+        $this->reset();
 
+    }
+    public function supplierConfirm($id){
+        $suppliers = Supplier::findOrFail($id);
+        $this->name = $suppliers->name;
+        $this->contact_person = $suppliers->contact_person;
+        $this->phone = $suppliers->phone;
+        $this->email = $suppliers->email;
+        $this->address = $suppliers->address;
     }
     public function destroy($id){
-
+        $suppliers = Supplier::findOrFail($id);
+        if($suppliers->stockItems()->count() > 0){
+            return with('error', 'Supplier tidak bisa dihapus karena masih digunakan oleh data barang.');
+        }
+        $suppliers->delete();
+        Cache::flush();
+        $this->dispatch('closeDeleteSupplierModal');
     }
 }

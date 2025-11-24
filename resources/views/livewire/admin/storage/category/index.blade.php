@@ -36,10 +36,12 @@
                                 <i class="fas fa-print mr-1"></i> Cetak
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item text-danger" href="#"><i class="fas fa-file-pdf mr-2"></i>
-                                    PDF</a>
-                                <a class="dropdown-item text-success" href="#"><i
-                                        class="fas fa-file-excel mr-2"></i> Excel</a>
+                                <button wire:click='exportPdf' class="btn-light dropdown-item text-danger"><i
+                                        class="fas fa-file-pdf mr-2"></i>
+                                    PDF</button>
+                                <button wire:click='exportExcel' class="btn-light dropdown-item text-success"><i
+                                        class="fas fa-file-excel mr-2"></i>
+                                    Excel</button>
                             </div>
                         </div>
 
@@ -57,7 +59,7 @@
                         </div>
                         <div>
                             <input type="text" class="form-control form-control-sm" placeholder="Cari..."
-                                wire:model.live="search">
+                                wire:model.lazy="search">
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -73,7 +75,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($categories as $item)
-                                    <tr>
+                                    <tr wire:key='item-{{ $item->id }}'>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->slug }}</td>

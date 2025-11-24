@@ -47,6 +47,17 @@
                         @enderror
                     </div>
                     <div class="row mt-2">
+                        <label for="email">Email</label>
+                        <input wire:model="email" type="email"
+                            class="form-control @error('email')
+                                    is-invalid
+                                @enderror"
+                            id="email" placeholder="Masukkan alamat email">
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="row mt-2">
                         <label for="address">Alamat</label>
                         <textarea wire:model="address"
                             class="form-control @error('address')

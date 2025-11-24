@@ -67,7 +67,7 @@
                                     <th style="width: 10px">#</th>
                                     <th>Nama Supplier</th>
                                     <th>Narahubung</th>
-                                    <th>Nomor Telpon</th>
+                                    <th>Nomor Telepon</th>
                                     <th>Email</th>
                                     <th>Alamat</th>
                                     <th style="width: 150px"><i class="fas fa-cog"></i></th>
