@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Admin\Storage\Category;
 
-use App\Models\Category;
 use Livewire\Component;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use App\Exports\CategoryExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -42,7 +45,6 @@ class index extends Component
         $this->validate(
         [
             'name' => 'required|string',
-            'slug' => 'required|string',
             'description' => 'nullable|string',
         ],
         [
@@ -52,7 +54,7 @@ class index extends Component
 
         $categories = new Category;
         $categories->name = $this->name;
-        $categories->slug = $this->slug;
+        $categories->slug = Str::slug($this->name);
         $categories->description = $this->description;
 
         $categories->save();
@@ -60,8 +62,11 @@ class index extends Component
         $this->dispatch('closeCreateCategoryModal');
     }
     public function edit($id){
+        // Jika id berbeda dengan id sebelumnya
+        if ($this->category_id !== $id) {
         $this->resetValidation();
         $this->reset();
+        };
 
         $categories = Category::findOrFail($id);
         $this->category_id = $categories->id;
@@ -74,17 +79,15 @@ class index extends Component
         $categories = Category::findOrFail($id);
         $this->validate([
             'name' => 'required|string',
-            'slug' => 'required|string',
             'description' => 'nullable|string',
         ],
         [
             'name.required' => 'Nama kategori wajib diisi.',
-            'slug.required' => 'Slug wajib diisi.',
         ]
         );
 
         $categories->name = $this->name;
-        $categories->slug = $this->slug;
+        $categories->slug = Str::slug($this->slug);
         $categories->description = $this->description;
         $categories->save();
         Cache::flush();
@@ -99,10 +102,17 @@ class index extends Component
     }
     public function destroy($id){
         $categories = Category::findOrFail($id);
-        if($categories){
-            $categories->delete();
+        if($categories->stockItems()->count() > 0){
+            return with('error', 'Kategori tidak bisa dihapus karena masih digunakan oleh data barang.');
         }
+        $categories->delete();
         Cache::flush();
         $this->dispatch('closeDeleteCategoryModal');
+    }
+
+    // Export Laporan
+    public function exportExcel()
+    {
+        return Excel::download(new CategoryExport, now()->format('Ymd_His') . ' - Daftar Kategori.xlsx');
     }
 }

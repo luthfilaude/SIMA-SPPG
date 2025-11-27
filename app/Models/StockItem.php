@@ -20,7 +20,7 @@ class StockItem extends Model
         'stock_image',
         'stock',
         'stock_min',
-        'stock_purchase',
+        'price_purchase',
         'supplier_id',
         'category_id',
     ];

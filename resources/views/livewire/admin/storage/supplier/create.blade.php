@@ -13,6 +13,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @csrf
                     <div class="row">
                         <label for="name">Nama Supplier</label>
                         <input wire:model="name" type="text"

@@ -13,6 +13,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @csrf
                     <div class="row">
                         <label for="name">Nama Kategori</label>
                         <input wire:model="name" type="text"
@@ -21,17 +22,6 @@
                                 @enderror"
                             id="name" placeholder="Masukkan nama kategori">
                         @error('name')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="row mt-2">
-                        <label for="slug">slug</label>
-                        <input wire:model="slug" type="text"
-                            class="form-control @error('slug')
-                                    is-invalid
-                                @enderror"
-                            id="sku" placeholder="Masukkan slug">
-                        @error('slug')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

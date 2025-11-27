@@ -13,8 +13,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @csrf
                     <div class="row">
-                        <label for="name">Nama Bahan Baku</label>
+                        <label for="name">Nama Bahan/Barang</label>
                         <input wire:model="name" type="text"
                             class="form-control @error('name')
                                     is-invalid
@@ -58,13 +59,32 @@
                         @enderror
                     </div>
                     <div class="row mt-2">
-                        <label for="category_id">Kategori</label>
-                        <select wire:model="category_id"
-                            class="form-control @error('category_id')
+                        <label for="stock">Stok Minimal</label>
+                        <input wire:model="stock_min" type="text"
+                            class="form-control @error('stock_min')
                                     is-invalid
                                 @enderror"
+                            id="stock_min" placeholder="Masukkan jumlah stok minimum bahan">
+                        @error('stock_min')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="row mt-2">
+                        <label for="price_purchase">Harga Beli</label>
+                        <input wire:model="price_purchase" type="text"
+                            class="form-control @error('price_purchase')
+                                    is-invalid
+                                @enderror"
+                            id="price_purchase" placeholder="Masukkan harga beli">
+                        @error('price_purchase')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="row mt-2">
+                        <label for="category_id">Kategori</label>
+                        <select wire:model="category_id" class="form-control @error('category_id') is-invalid @enderror"
                             id="category_id">
-                            <option selected>Pilih kategori</option>
+                            <option value="">Pilih Kategori</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -75,17 +95,22 @@
                     </div>
                     <div class="row mt-2">
                         <label for="supplier_id">Supplier</label>
-                        <select wire:model="supplier_id"
-                            class="form-control @error('supplier_id')
-                                    is-invalid
-                                @enderror"
+                        <select wire:model="supplier_id" class="form-control @error('supplier_id') is-invalid @enderror"
                             id="supplier_id">
-                            <option selected>Pilih supplier</option>
+                            <option value="">Pilih Supplier</option>
                             @foreach ($suppliers as $supplier)
                                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                             @endforeach
                         </select>
                         @error('supplier_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="row mt-2">
+                        <label for="stock_image">Upload Gambar</label>
+                        <input wire:model='stock_image' type="file"
+                            class="form-control-file @error('stock_image') is-invalid @enderror">
+                        @error('stock_image')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

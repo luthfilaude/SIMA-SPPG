@@ -13,6 +13,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @error('error')
+                        <div class="row alert alert-danger">
+                            <div class="col-4">
+                                <span>{{ $message }}</span>
+                            </div>
+                        </div>
+                    @enderror
                     <div class="row">
                         <div class="col-4">
                             <span>Nama Kategori</span>

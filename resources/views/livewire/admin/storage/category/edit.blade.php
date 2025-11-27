@@ -25,17 +25,6 @@
                         @enderror
                     </div>
                     <div class="row mt-2">
-                        <label for="slug">slug</label>
-                        <input wire:model="slug" type="text"
-                            class="form-control @error('slug')
-                                    is-invalid
-                                @enderror"
-                            id="sku">
-                        @error('slug')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="row mt-2">
                         <label for="description">Deskripsi</label>
                         <textarea wire:model='description' class="form-control @error('description') is-invalid @enderror"
                             placeholder="Masukkan deskripsi produk"></textarea>

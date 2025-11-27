@@ -73,11 +73,13 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Nama Bahan Baku</th>
+                                    <th>Nama Bahan</th>
                                     <th>SKU</th>
                                     <th>Kategori</th>
+                                    <th>Supplier</th>
                                     <th>Stok</th>
-                                    <th>Harga Beli</th>
+                                    <th>Stok Minimum</th>
+                                    <th>Harga Satuan</th>
                                     <th style="width: 150px"><i class="fas fa-cog"></i></th>
                                 </tr>
                             </thead>
@@ -88,9 +90,10 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->sku }}</td>
                                         <td>{{ $item->category->name }}</td>
-                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->supplier->name }}</td>
                                         <td>{{ $item->stock }}</td>
-                                        <td>{{ $item->stock_purchase }}</td>
+                                        <td>{{ $item->stock_min }}</td>
+                                        <td>Rp {{ number_format($item->price_purchase, 0, ',', '.') }}</td>
                                         <td>
                                             <button wire:click='show({{ $item->id }})' data-toggle="modal"
                                                 data-target="#showStorageModal" class="btn btn-sm btn-primary"><i
@@ -98,9 +101,9 @@
                                             <button wire:click='edit({{ $item->id }})' data-toggle="modal"
                                                 data-target="#updateStorageModal" class="btn btn-sm btn-warning"><i
                                                     class="fas fa-edit"></i></button>
-                                            <button wire:click='storageConfirm({{ $item->id }})'
-                                                data-toggle="modal" data-target="#deleteStorageModal"
-                                                class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            <button wire:click='show({{ $item->id }})' data-toggle="modal"
+                                                data-target="#deleteStorageModal" class="btn btn-sm btn-danger"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -130,8 +133,43 @@
         </script>
     @endscript
     @include('livewire.admin.storage.edit')
+    @script
+        <script>
+            $wire.on('closeUpdateModal', () => {
+                $('#updateStorageModal').modal('hide');
+                swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data stok gudang berhasil diupdate',
+                    timer: 2000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    @endscript
     @include('livewire.admin.storage.delete')
+    @script
+        <script>
+            $wire.on('closeDeleteModal', () => {
+                $('#deleteStorageModal').modal('hide');
+                swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data stok gudang berhasil dihapus',
+                    timer: 2000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    @endscript
     @include('livewire.admin.storage.show')
+    @script
+        <script>
+            $wire.on('closeStorageModal', () => {
+                $('#showStorageModal').modal('hide');
+            });
+        </script>
+    @endscript
     @include('livewire.admin.storage.stockIn')
     @include('livewire.admin.storage.stockOut')
 </div>

@@ -29,9 +29,8 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
-
-                                <p>Total Bahan Baku</p>
+                                <h3>{{ $stockItems }}</h3>
+                                <p>Bahan Baku/Barang</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
